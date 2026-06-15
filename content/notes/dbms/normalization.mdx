@@ -1,0 +1,32 @@
+---
+title: "Database Normalization"
+slug: normalization
+subject: dbms
+description: "Normalization forms — 1NF, 2NF, 3NF, BCNF and beyond."
+order: 1
+published: true
+type: mdx
+---
+
+# Database Normalization
+
+## What is Normalization?
+
+Normalization is the process of organizing data to reduce redundancy and improve integrity.
+
+## Normal Forms
+
+### 1NF (First Normal Form)
+- Each column contains atomic values
+- No repeating groups
+
+### 2NF (Second Normal Form)
+- In 1NF
+- Every non-key attribute is fully functionally dependent on the primary key
+
+### 3NF (Third Normal Form)
+- In 2NF
+- No transitive dependencies
+
+### BCNF (Boyce-Codd Normal Form)
+- Every determinant is a candidate key
