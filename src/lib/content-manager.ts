@@ -1,9 +1,15 @@
-import fs from 'fs/promises'
-import path from 'path'
-import yaml from 'js-yaml'
+import { supabaseAdmin } from './supabase'
 
-const CONTENT_ROOT = path.join(process.cwd(), 'content')
+// ============================================
+// TYPES — preserving MdxDocument for backward compat
+// ============================================
 
+/**
+ * Legacy type expected by all admin forms.
+ * frontmatter = camelCase properties from MDX frontmatter
+ * body = MDX content string
+ * slug = URL-friendly identifier
+ */
 export interface MdxDocument {
   frontmatter: Record<string, unknown>
   body: string
@@ -11,125 +17,157 @@ export interface MdxDocument {
   filePath: string
 }
 
-function normalizeDates(value: unknown): unknown {
-  if (value instanceof Date) {
-    return value.toISOString().split('T')[0]
-  }
-  if (Array.isArray(value)) {
-    return value.map(normalizeDates)
-  }
-  if (value && typeof value === 'object') {
-    const obj: Record<string, unknown> = {}
-    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
-      obj[k] = normalizeDates(v)
+// ============================================
+// COLLECTION TABLE MAP
+// ============================================
+
+const COLLECTION_TABLES: Record<string, string> = {
+  projects: 'projects',
+  certifications: 'certifications',
+  blogs: 'blogs',
+  notes: 'notes',
+  hackathons: 'hackathons',
+  internships: 'internships',
+  leadership: 'leadership',
+  media: 'media',
+  certificates: 'certificates',
+  missions: 'missions',
+}
+
+// Maps frontmatter camelCase keys to database snake_case columns
+const FM_TO_COL: Record<string, string> = {
+  techStack: 'tech_stack',
+  liveUrl: 'live_url',
+  githubUrl: 'github_url',
+  credentialId: 'credential_id',
+  credentialUrl: 'credential_url',
+  pdfUrl: 'pdf_url',
+  imageUrl: 'image_url',
+  issueDate: 'issue_date',
+  verificationUrl: 'verification_url',
+  certificatePdfUrl: 'certificate_pdf_url',
+  thumbnailUrl: 'thumbnail_url',
+  projectName: 'project_name',
+  teamSize: 'team_size',
+  startDate: 'start_date',
+  endDate: 'end_date',
+  certificateUrl: 'certificate_url',
+  peopleImpacted: 'people_impacted',
+  eventsConducted: 'events_conducted',
+  volunteersManaged: 'volunteers_managed',
+  initiativeType: 'initiative_type',
+  fileUrl: 'file_url',
+}
+
+// Reverse map: snake_case db column -> camelCase frontmatter key
+const COL_TO_FM: Record<string, string> = {}
+for (const [k, v] of Object.entries(FM_TO_COL)) COL_TO_FM[v] = k
+
+const JSONB_ARRAYS = new Set(['tech_stack', 'skills', 'tags', 'technologies'])
+
+const EXCLUDE_FM = new Set([
+  'id', 'content', 'body', 'slug', 'title',
+  'created_at', 'updated_at', 'metadata',
+])
+
+const EXCLUDE_DB = new Set([
+  'id', 'content', 'created_at', 'updated_at',
+])
+
+// ============================================
+// HELPERS
+// ============================================
+
+function getTable(collection: string): string {
+  const table = COLLECTION_TABLES[collection]
+  if (!table) throw new Error(`Unknown collection: ${collection}`)
+  return table
+}
+
+function fmToRow(fm: Record<string, unknown>): Record<string, unknown> {
+  const row: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(fm)) {
+    if (EXCLUDE_FM.has(key)) continue
+    if (key === 'stats' && value && typeof value === 'object') {
+      row.stats = value; continue
     }
-    return obj
+    const col = FM_TO_COL[key] || key
+    if (JSONB_ARRAYS.has(col) && Array.isArray(value)) {
+      row[col] = value
+    } else if (JSONB_ARRAYS.has(col) && typeof value === 'string') {
+      row[col] = (value as string).split(',').map(s => s.trim()).filter(Boolean)
+    } else {
+      row[col] = value === undefined ? null : value
+    }
   }
-  return value
+  return row
 }
 
-function parseMdxFile(content: string): { frontmatter: Record<string, unknown>; body: string } {
-  const match = content.match(/^---\n([\s\S]*?)\n---\n\n?([\s\S]*)$/)
-  if (!match) {
-    return { frontmatter: {}, body: content }
+function serializeValue(value: unknown): unknown {
+  if (value instanceof Date) return value.toISOString().split('T')[0]
+  return value === null ? undefined : value
+}
+
+function rowToFm(row: Record<string, unknown>): Record<string, unknown> {
+  const fm: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(row)) {
+    if (EXCLUDE_DB.has(key)) continue
+    const fmKey = COL_TO_FM[key] || key
+    fm[fmKey] = serializeValue(value)
   }
-
-  const frontmatter = normalizeDates(yaml.load(match[1])) as Record<string, unknown>
-  return { frontmatter, body: match[2].trimStart() }
+  return fm
 }
 
-function generateMdxFile(frontmatter: Record<string, unknown>, body: string): string {
-  const yamlStr = yaml.dump(frontmatter, {
-    indent: 2,
-    lineWidth: -1,
-    quotingType: '"',
-    forceQuotes: true,
-    noRefs: true,
-    sortKeys: false,
-  })
-  return `---\n${yamlStr}---\n\n${body.trim()}\n`
-}
-
-export function getContentDir(collection: string): string {
-  const dirMap: Record<string, string> = {
-    projects: 'projects',
-    certifications: 'certifications',
-    blogs: 'blogs',
-    notes: 'notes',
-    hackathons: 'hackathons',
-    internships: 'internships',
-    leadership: 'leadership',
-    media: 'media',
-    certificates: 'certificates',
+function rowToMdxDocument(row: Record<string, unknown>): MdxDocument {
+  return {
+    slug: String(row.slug),
+    body: String(row.content || ''),
+    frontmatter: rowToFm(row),
+    filePath: `supabase://${row.slug}`,
   }
-  return path.join(CONTENT_ROOT, dirMap[collection] || collection)
 }
+
+// ============================================
+// PUBLIC API — same signatures as original content-manager
+// ============================================
 
 export async function listContent(collection: string): Promise<MdxDocument[]> {
-  const dir = getContentDir(collection)
+  const table = getTable(collection)
+  const isNotes = collection === 'notes'
 
-  try {
-    await fs.access(dir)
-  } catch {
+  const query = supabaseAdmin.from(table).select('*')
+
+  if (isNotes) {
+    query.order('order', { ascending: true })
+  } else {
+    query.order('date', { ascending: false })
+  }
+  query.order('created_at', { ascending: false })
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error(`[listContent] ${collection}:`, error.message)
     return []
   }
 
-  const entries: MdxDocument[] = []
-
-  async function walkDir(currentDir: string) {
-    const items = await fs.readdir(currentDir, { withFileTypes: true })
-    for (const item of items) {
-      const fullPath = path.join(currentDir, item.name)
-      if (item.isDirectory()) {
-        await walkDir(fullPath)
-      } else if (item.name.endsWith('.mdx')) {
-        const content = await fs.readFile(fullPath, 'utf-8')
-        const { frontmatter, body } = parseMdxFile(content)
-        const slug = (frontmatter.slug as string) || item.name.replace('.mdx', '')
-        entries.push({ frontmatter, body, slug, filePath: fullPath })
-      }
-    }
-  }
-
-  await walkDir(dir)
-  return entries.sort((a, b) => {
-    const dateA = String(a.frontmatter.date ?? '')
-    const dateB = String(b.frontmatter.date ?? '')
-    if (dateA && dateB) return dateB.localeCompare(dateA)
-    return 0
-  })
+  return (data || []).map(rowToMdxDocument)
 }
 
 export async function getContentBySlug(
   collection: string,
   slug: string
 ): Promise<MdxDocument | null> {
-  const dir = getContentDir(collection)
+  const table = getTable(collection)
 
-  async function searchDir(currentDir: string): Promise<MdxDocument | null> {
-    const items = await fs.readdir(currentDir, { withFileTypes: true })
-    for (const item of items) {
-      const fullPath = path.join(currentDir, item.name)
-      if (item.isDirectory()) {
-        const result = await searchDir(fullPath)
-        if (result) return result
-      } else if (item.name.endsWith('.mdx')) {
-        const content = await fs.readFile(fullPath, 'utf-8')
-        const { frontmatter, body } = parseMdxFile(content)
-        if (frontmatter.slug === slug) {
-          return { frontmatter, body, slug, filePath: fullPath }
-        }
-      }
-    }
-    return null
-  }
+  const { data, error } = await supabaseAdmin
+    .from(table)
+    .select('*')
+    .eq('slug', slug)
+    .maybeSingle()
 
-  try {
-    await fs.access(dir)
-    return await searchDir(dir)
-  } catch {
-    return null
-  }
+  if (error || !data) return null
+  return rowToMdxDocument(data)
 }
 
 export async function saveContent(
@@ -137,33 +175,27 @@ export async function saveContent(
   slug: string,
   frontmatter: Record<string, unknown>,
   body: string,
-  subdir?: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _subdir?: string
 ): Promise<void> {
-  const dir = getContentDir(collection)
-  const targetDir = subdir ? path.join(dir, subdir) : dir
+  const table = getTable(collection)
+  const row = fmToRow(frontmatter)
 
-  await fs.mkdir(targetDir, { recursive: true })
-
-  const filePath = path.join(targetDir, `${slug}.mdx`)
-  const content = generateMdxFile(frontmatter, body)
-  await fs.writeFile(filePath, content, 'utf-8')
-}
-
-export async function deleteContent(collection: string, slug: string): Promise<boolean> {
-  const existing = await getContentBySlug(collection, slug)
-  if (!existing) return false
-
-  await fs.unlink(existing.filePath)
-
-  const parentDir = path.dirname(existing.filePath)
-  if (parentDir !== getContentDir(collection)) {
-    const remaining = await fs.readdir(parentDir)
-    if (remaining.length === 0) {
-      await fs.rmdir(parentDir).catch(() => {})
-    }
+  const payload: Record<string, unknown> = {
+    slug,
+    title: String(frontmatter.title || slug),
+    ...row,
+    content: body || '',
   }
 
-  return true
+  const { error } = await supabaseAdmin
+    .from(table)
+    .insert(payload)
+
+  if (error) {
+    console.error(`[saveContent] ${collection}/${slug}:`, error.message)
+    throw new Error(error.message)
+  }
 }
 
 export async function updateContent(
@@ -171,24 +203,66 @@ export async function updateContent(
   slug: string,
   frontmatter: Record<string, unknown>,
   body: string,
-  subdir?: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _subdir?: string
 ): Promise<void> {
-  const existing = await getContentBySlug(collection, slug)
+  const table = getTable(collection)
+  const row = fmToRow(frontmatter)
 
-  if (existing) {
-    const parentDir = path.dirname(existing.filePath)
-    const collectionDir = getContentDir(collection)
-
-    if (parentDir === collectionDir || !subdir) {
-      await fs.unlink(existing.filePath)
-    } else {
-      await fs.unlink(existing.filePath)
-      const remaining = await fs.readdir(parentDir).catch(() => [])
-      if (remaining.length === 0) {
-        await fs.rmdir(parentDir).catch(() => {})
-      }
-    }
+  const payload: Record<string, unknown> = {
+    title: String(frontmatter.title || slug),
+    ...row,
   }
 
-  await saveContent(collection, slug, frontmatter, body, subdir)
+  if (body) payload.content = body
+
+  // Handle slug change
+  const newSlug = frontmatter.slug as string | undefined
+  if (newSlug && newSlug !== slug) {
+    payload.slug = newSlug
+  }
+
+  const { error } = await supabaseAdmin
+    .from(table)
+    .update(payload)
+    .eq('slug', slug)
+
+  if (error) {
+    console.error(`[updateContent] ${collection}/${slug}:`, error.message)
+    throw new Error(error.message)
+  }
+}
+
+export async function deleteContent(collection: string, slug: string): Promise<boolean> {
+  const table = getTable(collection)
+
+  const { error } = await supabaseAdmin
+    .from(table)
+    .delete()
+    .eq('slug', slug)
+
+  if (error) {
+    console.error(`[deleteContent] ${collection}/${slug}:`, error.message)
+    return false
+  }
+
+  return true
+}
+
+export function getContentDir(collection: string): string {
+  return `content/${COLLECTION_TABLES[collection] || collection}`
+}
+
+export async function countContent(collection: string): Promise<number> {
+  const table = getTable(collection)
+  const { count, error } = await supabaseAdmin
+    .from(table)
+    .select('*', { count: 'exact', head: true })
+  if (error) return 0
+  return count || 0
+}
+
+export async function slugExists(collection: string, slug: string): Promise<boolean> {
+  const existing = await getContentBySlug(collection, slug)
+  return existing !== null
 }

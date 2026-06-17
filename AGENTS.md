@@ -20,11 +20,12 @@ Pokémon emulator-inspired portfolio by **Vinayak Kundar** — Computer Engineer
 | **Search** | Pagefind (static search indexing) |
 | **Smooth Scroll** | Lenis |
 | **Comments** | Giscus (GitHub Discussions) |
-| **Analytics** | PostHog |
+| **Analytics** | PostHog, Vercel Analytics, Vercel Speed Insights |
 | **Auth/DB** | Supabase |
 | **Email** | Resend |
 | **File Storage** | Cloudinary |
 | **YAML** | js-yaml |
+| **SEO** | @vercel/og, structured data (JSON-LD), dynamic sitemap, robots.ts |
 | **Package Manager** | npm |
 
 ---
@@ -411,6 +412,12 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 | `src/lib/utils.ts` | Utility functions: `cn()`, `formatDate()`, `absoluteUrl()`, `normalizePdfUrl()` |
 | `src/middleware.ts` | Protects `/admin/*` and `/api/admin/*` routes |
 | `src/app/badges/page.tsx` | Trainer Progression Hub — merges certifications + certificates collections |
+| `src/lib/seo.ts` | SEO metadata utility — `generateSEOMetadata()` with canonical URLs, OG, Twitter cards, robots config |
+| `src/components/shared/JsonLd.tsx` | JSON-LD structured data components (Person, WebSite, BreadcrumbList, BlogPosting, etc.) |
+| `src/app/sitemap.ts` | Dynamic XML sitemap — auto-generates URLs from all content collections |
+| `src/app/robots.ts` | Robots configuration — allow/disallow rules, GPTBot/CCBot blocking |
+| `src/app/api/og/route.tsx` | Dynamic OG image generation with Pokémon emulator theme (1200×630) |
+| `src/app/about/page.tsx` | Entity authority page — biography, education, achievements, location |
 
 ---
 
