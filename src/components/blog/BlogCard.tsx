@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'motion/react'
-import { Calendar, Clock, Tag } from 'lucide-react'
+import { Calendar, Clock } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 
 interface Blog {

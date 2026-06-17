@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { CheckCircle2, ChevronDown, ChevronUp, Circle, Calendar, Award } from 'lucide-react'
+import { CheckCircle2, ChevronDown, ChevronUp, Circle, Calendar } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 
 interface Mission {

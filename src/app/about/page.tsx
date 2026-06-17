@@ -56,7 +56,7 @@ export default function AboutPage() {
         </div>
         <div className="border-dialogue bg-surface p-3 shadow-8bit-sm text-center">
           <Award size={24} className="mx-auto text-secondary mb-1" aria-hidden="true" />
-          <p className="font-mono text-xs font-bold text-primary">Google Developer's Group on Campus</p>
+          <p className="font-mono text-xs font-bold text-primary">Google Developer&apos;s Group on Campus</p>
           <p className="font-mono text-[10px] text-on-surface-variant">Head of Operations</p>
         </div>
         <div className="border-dialogue bg-surface p-3 shadow-8bit-sm text-center">

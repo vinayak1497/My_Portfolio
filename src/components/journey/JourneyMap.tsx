@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { MapPin, Trophy, Star, CheckCircle2, ChevronRight, Lock } from 'lucide-react'
+import { MapPin, Trophy } from 'lucide-react'
 import { DialogueBox } from './DialogueBox'
 import { DialogueCard } from '../shared/DialogueCard'
 import { RetroButton } from '../shared/RetroButton'

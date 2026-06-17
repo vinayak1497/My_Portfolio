@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, useMotionValue, useTransform, animate } from 'motion/react'
+import { motion, animate } from 'motion/react'
 import { Award, Zap } from 'lucide-react'
 
 interface XPCounterProps {

@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { Award, ShieldAlert, Sparkles } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 
 interface Certification {

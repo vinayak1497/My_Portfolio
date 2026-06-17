@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'motion/react'
-import { ArrowRight, Trophy } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { TechBadge } from './TechBadge'
 import { LevelBadge } from '../shared/LevelBadge'
 
