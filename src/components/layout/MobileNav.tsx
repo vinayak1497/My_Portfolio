@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Map, Terminal, BookOpen, Award, Home } from 'lucide-react'
+import { Map, Terminal, BookOpen, Award, Home, FileText, Mail, ScrollText, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useUIStore } from '@/stores/ui-store'
 import { motion, AnimatePresence } from 'motion/react'
@@ -42,10 +42,10 @@ export function MobileNav() {
                     : 'text-on-primary/60 active:scale-95 active:translate-y-0.5'
                 )}
               >
-                <Icon size={20} strokeWidth={isActive ? 2.5 : 1.5} />
+                <Icon size={20} strokeWidth={isActive ? 2.5 : 1.5} aria-hidden="true" />
                 <span className="text-[10px] font-mono font-bold">{link.label}</span>
                 {isActive && (
-                  <span className="w-1 h-1 bg-tertiary-fixed-dim rounded-full mt-0.5" />
+                  <span className="w-1 h-1 bg-tertiary-fixed-dim rounded-full mt-0.5" aria-hidden="true" />
                 )}
               </Link>
             )
@@ -66,9 +66,10 @@ export function MobileNav() {
             <div className="flex flex-col gap-2 p-4 pt-6">
               {[
                 ...mobileNavLinks,
-                { href: '/blogs', label: 'Blogs', icon: Terminal },
-                { href: '/contact', label: 'Contact', icon: Terminal },
-                { href: '/resume', label: 'Resume', icon: Terminal },
+                { href: '/blogs', label: 'Blogs', icon: FileText },
+                { href: '/about', label: 'About', icon: User },
+                { href: '/resume', label: 'Resume', icon: ScrollText },
+                { href: '/contact', label: 'Contact', icon: Mail },
               ].map((link, i) => {
                 const Icon = link.icon
                 const isActive = pathname === link.href
@@ -89,7 +90,7 @@ export function MobileNav() {
                           : 'text-on-surface border-outline-variant hover:border-primary hover:shadow-8bit-sm'
                       )}
                     >
-                      <Icon size={18} />
+                      <Icon size={18} aria-hidden="true" />
                       {link.label}
                     </Link>
                   </motion.div>

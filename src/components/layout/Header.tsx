@@ -13,6 +13,7 @@ const navLinks = [
   { href: '/pokedex', label: 'Pokédex', icon: 'book' },
   { href: '/badges', label: 'Badges', icon: 'award' },
   { href: '/blogs', label: 'Blogs', icon: 'file-text' },
+  { href: '/about', label: 'About', icon: 'user' },
   { href: '/contact', label: 'Contact', icon: 'mail' },
 ]
 
@@ -54,28 +55,28 @@ export function Header() {
             className="text-on-primary/70 hover:text-on-primary p-1.5 hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
             aria-label="Search"
           >
-            <Search size={18} />
+            <Search size={18} aria-hidden="true" />
           </button>
           <button
             onClick={toggleTerminal}
             className="text-on-primary/70 hover:text-on-primary p-1.5 hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
             aria-label="Open terminal"
           >
-            <Terminal size={18} />
+            <Terminal size={18} aria-hidden="true" />
           </button>
           <button
             onClick={toggleSound}
             className="text-on-primary/70 hover:text-on-primary p-1.5 hover:translate-x-0.5 hover:translate-y-0.5 transition-all hidden md:block"
             aria-label={isSoundEnabled ? 'Mute sounds' : 'Enable sounds'}
           >
-            {isSoundEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
+            {isSoundEnabled ? <Volume2 size={18} aria-hidden="true" /> : <VolumeX size={18} aria-hidden="true" />}
           </button>
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="text-on-primary/70 hover:text-on-primary p-1.5 hover:translate-x-0.5 hover:translate-y-0.5 transition-all hidden md:block"
-            aria-label="Toggle theme"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
           >
-            <Settings size={18} />
+            <Settings size={18} aria-hidden="true" />
           </button>
           {/* Mobile menu toggle */}
           <button
@@ -83,14 +84,14 @@ export function Header() {
             className="lg:hidden text-on-primary/70 hover:text-on-primary p-1.5"
             aria-label={isMobileNavOpen ? 'Close menu' : 'Open menu'}
           >
-            {isMobileNavOpen ? <X size={20} /> : <Menu size={20} />}
+            {isMobileNavOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
           </button>
         </div>
       </div>
 
       {/* Battery/Status bar (decorative) */}
       <div className="hidden md:flex justify-between items-center max-w-[1280px] mx-auto px-6 py-0.5 text-on-primary/40">
-        <div className="flex gap-2">
+        <div className="flex gap-2" aria-hidden="true">
           <span className="w-2 h-2 bg-tertiary-fixed-dim rounded-full" />
           <span className="w-2 h-2 bg-secondary rounded-full" />
         </div>

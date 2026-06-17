@@ -25,6 +25,7 @@ export default function HomePage() {
 
   return (
     <div className="relative min-h-[calc(100vh-72px)] flex items-center justify-center overflow-hidden">
+      <h1 className="sr-only">Vinayak Kundar — Computer Engineering Student, AI Builder & Full Stack Developer</h1>
       <IntroOverlay />
     </div>
   )

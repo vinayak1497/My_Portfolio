@@ -1,5 +1,12 @@
 import type { Metadata } from 'next'
-import { getCertifications, getHackathons, getInternships, getLeadership, getMedia, getCertificates } from '@/lib/content-data'
+import {
+  getCertifications,
+  getHackathons,
+  getInternships,
+  getLeadership,
+  getMedia,
+  getCertificates,
+} from '@/lib/content-data'
 import type { CertificationData, CertificateData } from '@/lib/content-data'
 import { normalizePdfUrl } from '@/lib/utils'
 import { TrainerProfileDashboard } from '@/components/badges/TrainerProfileDashboard'
@@ -10,11 +17,10 @@ import { CorporateQuests } from '@/components/badges/CorporateQuests'
 import { CommunityLeadership } from '@/components/badges/CommunityLeadership'
 import { MediaRecognition } from '@/components/badges/MediaRecognition'
 import { Award } from 'lucide-react'
+import { badgesSEO } from '@/lib/seo'
+import { BreadcrumbJsonLd, EducationalOccupationalCredentialJsonLd, EventJsonLd } from '@/components/shared/JsonLd'
 
-export const metadata: Metadata = {
-  title: 'Trainer Progression Hub',
-  description: 'Career progression platform — certifications, hackathons, internships, leadership, and technical skills.',
-}
+export const metadata: Metadata = badgesSEO
 
 function certificateToCertification(cert: CertificateData): CertificationData {
   const rawPdfUrl = cert.certificatePdfUrl?.trim()
@@ -58,12 +64,38 @@ export default async function BadgesPage() {
       .map(certificateToCertification),
   ]
 
+  const firstHackathon = hackathons[0]
+
   return (
     <div className="p-4 md:p-8 lg:p-12 space-y-8">
+      <BreadcrumbJsonLd items={[
+        { name: 'Home', item: '/' },
+        { name: 'Badges', item: '/badges' },
+      ]} />
+      {certifications.slice(0, 3).map((cert) => (
+        <EducationalOccupationalCredentialJsonLd
+          key={cert.slug}
+          name={cert.title}
+          description={`${cert.title} — ${cert.category} certification by ${cert.issuer}`}
+          url="/badges"
+          issuerName={cert.issuer}
+          dateIssued={cert.date}
+        />
+      ))}
+      {firstHackathon && (
+        <EventJsonLd
+          name={firstHackathon.title}
+          description={firstHackathon.content.substring(0, 200)}
+          url="/badges"
+          startDate={firstHackathon.date}
+          eventType={firstHackathon.category}
+        />
+      )}
+
       {/* Page Header */}
       <header className="border-b-2 border-primary pb-3">
         <h1 className="text-headline-lg-mobile md:text-headline-lg text-primary uppercase flex items-center gap-3">
-          <Award size={32} className="text-tertiary-container" />
+          <Award size={32} className="text-tertiary-container" aria-hidden="true" />
           Trainer Progression Hub
         </h1>
         <p className="text-body-lg text-on-surface-variant mt-2">
@@ -72,7 +104,7 @@ export default async function BadgesPage() {
       </header>
 
       {/* Section 1: Trainer Profile Dashboard */}
-      <section id="profile">
+      <section id="profile" aria-label="Trainer profile dashboard">
         <TrainerProfileDashboard
           certifications={allCertifications}
           hackathons={hackathons}
@@ -82,49 +114,49 @@ export default async function BadgesPage() {
       </section>
 
       {/* Section 2: Certification Archive */}
-      <section id="certifications">
+      <section id="certifications" aria-label="Certification archive">
         <h2 className="text-headline-md text-primary uppercase font-mono font-bold mb-4 border-b border-primary/20 pb-2">
-          <span className="text-secondary">&gt;</span> Certification Archive
+          <span className="text-secondary" aria-hidden="true">&gt;</span> Certification Archive
         </h2>
         <CertificationArchive certifications={allCertifications} />
       </section>
 
       {/* Section 3: Skill Tree Analysis */}
-      <section id="skills">
+      <section id="skills" aria-label="Skill tree analysis">
         <h2 className="text-headline-md text-primary uppercase font-mono font-bold mb-4 border-b border-primary/20 pb-2">
-          <span className="text-secondary">&gt;</span> Skill Tree Analysis
+          <span className="text-secondary" aria-hidden="true">&gt;</span> Skill Tree Analysis
         </h2>
         <SkillTreeAnalysis certifications={allCertifications} />
       </section>
 
       {/* Section 4: League Achievements */}
-      <section id="hackathons">
+      <section id="hackathons" aria-label="Hackathon achievements">
         <h2 className="text-headline-md text-primary uppercase font-mono font-bold mb-4 border-b border-primary/20 pb-2">
-          <span className="text-secondary">&gt;</span> League Achievements
+          <span className="text-secondary" aria-hidden="true">&gt;</span> League Achievements
         </h2>
         <LeagueAchievements hackathons={hackathons} />
       </section>
 
       {/* Section 5: Corporate Quests */}
-      <section id="internships">
+      <section id="internships" aria-label="Internship experience">
         <h2 className="text-headline-md text-primary uppercase font-mono font-bold mb-4 border-b border-primary/20 pb-2">
-          <span className="text-secondary">&gt;</span> Corporate Quests
+          <span className="text-secondary" aria-hidden="true">&gt;</span> Corporate Quests
         </h2>
         <CorporateQuests internships={internships} />
       </section>
 
       {/* Section 6: Community Leadership */}
-      <section id="community">
+      <section id="community" aria-label="Community leadership">
         <h2 className="text-headline-md text-primary uppercase font-mono font-bold mb-4 border-b border-primary/20 pb-2">
-          <span className="text-secondary">&gt;</span> Community Leadership
+          <span className="text-secondary" aria-hidden="true">&gt;</span> Community Leadership
         </h2>
         <CommunityLeadership leadership={leadership} />
       </section>
 
       {/* Section 7: Media & Recognition */}
-      <section id="media">
+      <section id="media" aria-label="Media recognition">
         <h2 className="text-headline-md text-primary uppercase font-mono font-bold mb-4 border-b border-primary/20 pb-2">
-          <span className="text-secondary">&gt;</span> Media &amp; Recognition
+          <span className="text-secondary" aria-hidden="true">&gt;</span> Media &amp; Recognition
         </h2>
         <MediaRecognition media={media} />
       </section>

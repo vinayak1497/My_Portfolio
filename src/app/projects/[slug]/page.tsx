@@ -1,13 +1,15 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getProjectBySlug } from '@/lib/content-data'
+import { getProjects, getProjectBySlug } from '@/lib/content-data'
 import { MdxRenderer } from '@/components/shared/MdxRenderer'
 import { EmulatorWindow } from '@/components/shared/EmulatorWindow'
 import { RetroButton } from '@/components/shared/RetroButton'
 import { TechBadge } from '@/components/projects/TechBadge'
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
+import { projectDetailSEO } from '@/lib/seo'
+import { BreadcrumbJsonLd, SoftwareSourceCodeJsonLd } from '@/components/shared/JsonLd'
 
 interface ProjectPageProps {
   params: Promise<{
@@ -15,15 +17,18 @@ interface ProjectPageProps {
   }>
 }
 
+export async function generateStaticParams() {
+  const projects = await getProjects()
+  return projects.map((project) => ({
+    slug: project.slug,
+  }))
+}
+
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params
   const project = await getProjectBySlug(slug)
   if (!project) return {}
-
-  return {
-    title: `${project.title} | Projects`,
-    description: project.description,
-  }
+  return projectDetailSEO(project.title, project.description, slug)
 }
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
@@ -36,12 +41,24 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
   return (
     <div className="p-4 md:p-8 lg:p-12 space-y-6">
+      <BreadcrumbJsonLd items={[
+        { name: 'Home', item: '/' },
+        { name: 'Projects', item: '/projects' },
+        { name: project.title, item: `/projects/${project.slug}` },
+      ]} />
+      <SoftwareSourceCodeJsonLd
+        name={project.title}
+        description={project.description}
+        url={`/projects/${project.slug}`}
+        programmingLanguage={project.techStack}
+      />
+
       {/* Back navigation */}
       <Link
         href="/projects"
         className="inline-flex items-center gap-2 font-mono text-xs font-bold text-on-surface-variant hover:text-primary transition-colors uppercase"
       >
-        <ArrowLeft size={16} />
+        <ArrowLeft size={16} aria-hidden="true" />
         Back to Vault
       </Link>
 
@@ -77,7 +94,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                   <RetroButton variant="primary" className="w-full flex items-center justify-center gap-2">
                     Live Demo
-                    <ExternalLink size={16} />
+                    <ExternalLink size={16} aria-hidden="true" />
                   </RetroButton>
                 </a>
               )}
@@ -85,7 +102,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                   <RetroButton variant="secondary" className="w-full flex items-center justify-center gap-2">
                     Source Code
-                    <Github size={16} />
+                    <Github size={16} aria-hidden="true" />
                   </RetroButton>
                 </a>
               )}
@@ -93,17 +110,17 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
             {/* Detailed Stats */}
             {project.stats && (
-              <div className="border-dialogue bg-surface-container p-4 shadow-8bit space-y-4">
-                <h3 className="font-mono text-xs font-bold text-primary uppercase border-b border-primary/10 pb-2">
+              <div className="border-dialogue bg-surface-container p-4 shadow-8bit space-y-4" aria-label="Project performance attributes">
+                <h2 className="font-mono text-xs font-bold text-primary uppercase border-b border-primary/10 pb-2">
                   Performance Attributes
-                </h3>
+                </h2>
                 <div className="space-y-3 font-mono text-xs">
                   <div className="space-y-1">
                     <div className="flex justify-between font-bold">
                       <span>COMPLEXITY</span>
                       <span className="text-primary">{project.stats.complexity}/100</span>
                     </div>
-                    <div className="h-2.5 bg-surface border border-outline-variant overflow-hidden">
+                    <div className="h-2.5 bg-surface border border-outline-variant overflow-hidden" role="progressbar" aria-valuenow={project.stats.complexity} aria-valuemin={0} aria-valuemax={100} aria-label="Complexity score">
                       <div className="h-full bg-primary" style={{ width: `${project.stats.complexity}%` }} />
                     </div>
                   </div>
@@ -113,7 +130,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                       <span>IMPACT</span>
                       <span className="text-secondary">{project.stats.impact}/100</span>
                     </div>
-                    <div className="h-2.5 bg-surface border border-outline-variant overflow-hidden">
+                    <div className="h-2.5 bg-surface border border-outline-variant overflow-hidden" role="progressbar" aria-valuenow={project.stats.impact} aria-valuemin={0} aria-valuemax={100} aria-label="Impact score">
                       <div className="h-full bg-secondary" style={{ width: `${project.stats.impact}%` }} />
                     </div>
                   </div>
@@ -123,7 +140,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                       <span>INNOVATION</span>
                       <span className="text-tertiary-fixed-dim">{project.stats.innovation}/100</span>
                     </div>
-                    <div className="h-2.5 bg-surface border border-outline-variant overflow-hidden">
+                    <div className="h-2.5 bg-surface border border-outline-variant overflow-hidden" role="progressbar" aria-valuenow={project.stats.innovation} aria-valuemin={0} aria-valuemax={100} aria-label="Innovation score">
                       <div className="h-full bg-tertiary-container" style={{ width: `${project.stats.innovation}%` }} />
                     </div>
                   </div>
@@ -132,10 +149,10 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             )}
 
             {/* Tech Stack List */}
-            <div className="border-dialogue bg-surface p-4 shadow-8bit space-y-3">
-              <h3 className="font-mono text-xs font-bold text-primary uppercase border-b border-primary/10 pb-2">
+            <div className="border-dialogue bg-surface p-4 shadow-8bit space-y-3" aria-label="Technology stack">
+              <h2 className="font-mono text-xs font-bold text-primary uppercase border-b border-primary/10 pb-2">
                 Tech Stack
-              </h3>
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {project.techStack.map((tech) => (
                   <TechBadge key={tech} name={tech} />

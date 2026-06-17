@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Map, Terminal, BookOpen, Award, FileText, Mail, Gamepad2 } from 'lucide-react'
+import { Map, Terminal, BookOpen, Award, FileText, Mail, Gamepad2, User, ScrollText } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const sideNavLinks = [
@@ -11,6 +11,8 @@ const sideNavLinks = [
   { href: '/pokedex', label: 'Pokédex', icon: BookOpen },
   { href: '/badges', label: 'Badges', icon: Award },
   { href: '/blogs', label: 'Blogs', icon: FileText },
+  { href: '/about', label: 'About', icon: User },
+  { href: '/resume', label: 'Resume', icon: ScrollText },
   { href: '/contact', label: 'Contact', icon: Mail },
 ]
 
@@ -43,7 +45,7 @@ export function SideNav() {
       {/* Player Info */}
       <div className="mb-4 px-2 pt-2">
         <div className="flex items-center gap-2 mb-1">
-          <Gamepad2 size={16} className="text-primary" />
+          <Gamepad2 size={16} className="text-primary" aria-hidden="true" />
           <h2 className="text-headline-sm text-base text-primary">
             Vinayak Kundar
           </h2>
@@ -54,7 +56,7 @@ export function SideNav() {
         </p>
 
         {/* XP Bar */}
-        <div className="mt-2 h-2 bg-surface-dim rounded-sm overflow-hidden border border-outline-variant">
+        <div className="mt-2 h-2 bg-surface-dim rounded-sm overflow-hidden border border-outline-variant" role="progressbar" aria-valuenow={72} aria-valuemin={0} aria-valuemax={100} aria-label="Experience progress">
           <div
             className="h-full bg-tertiary-container rounded-sm"
             style={{ width: '72%' }}
@@ -87,7 +89,7 @@ export function SideNav() {
                       : 'text-on-surface-variant hover:bg-surface-variant hover:scale-[1.02]'
                   )}
                 >
-                  <Icon size={16} />
+                  <Icon size={16} aria-hidden="true" />
                   {link.label}
                 </Link>
               </li>

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { EmulatorWindow } from '@/components/shared/EmulatorWindow'
 import { RetroButton } from '@/components/shared/RetroButton'
 import { Mail, Send, CheckCircle2, AlertCircle } from 'lucide-react'
+import { ContactPageJsonLd } from '@/components/shared/JsonLd'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
@@ -38,9 +39,10 @@ export default function ContactPage() {
 
   return (
     <div className="p-4 md:p-8 lg:p-12 space-y-6">
+      <ContactPageJsonLd />
       <header className="mb-6 border-b-2 border-primary pb-3">
         <h1 className="text-headline-lg-mobile md:text-headline-lg text-primary uppercase flex items-center gap-3">
-          <Mail size={32} className="text-tertiary-container" />
+          <Mail size={32} className="text-tertiary-container" aria-hidden="true" />
           Contact
         </h1>
         <p className="text-body-lg text-on-surface-variant mt-2">
@@ -52,7 +54,7 @@ export default function ContactPage() {
         <EmulatorWindow title="COMMS_CONSOLE.exe" statusText={status.toUpperCase()}>
           {status === 'success' ? (
             <div className="p-8 text-center space-y-4">
-              <div className="w-16 h-16 bg-secondary/10 text-secondary border-2 border-secondary flex items-center justify-center mx-auto rounded-sm animate-bounce">
+              <div className="w-16 h-16 bg-secondary/10 text-secondary border-2 border-secondary flex items-center justify-center mx-auto rounded-sm animate-bounce" aria-hidden="true">
                 <CheckCircle2 size={36} />
               </div>
               <h2 className="font-mono text-headline-sm font-bold text-primary uppercase">
@@ -70,8 +72,8 @@ export default function ContactPage() {
           ) : (
             <form onSubmit={handleSubmit} className="p-4 md:p-6 space-y-4 font-mono text-xs">
               {status === 'error' && (
-                <div className="p-3 border-2 border-secondary bg-red-50 text-secondary flex items-center gap-2 font-bold mb-4">
-                  <AlertCircle size={16} />
+                <div className="p-3 border-2 border-secondary bg-red-50 text-secondary flex items-center gap-2 font-bold mb-4" role="alert">
+                  <AlertCircle size={16} aria-hidden="true" />
                   <span>ERROR: {statusMsg}</span>
                 </div>
               )}
@@ -145,7 +147,7 @@ export default function ContactPage() {
                   className="w-full flex items-center justify-center gap-2"
                   disabled={status === 'loading'}
                 >
-                  <Send size={14} />
+                  <Send size={14} aria-hidden="true" />
                   {status === 'loading' ? 'BROADCASTING...' : 'TRANSMIT SIGNAL'}
                 </RetroButton>
               </div>

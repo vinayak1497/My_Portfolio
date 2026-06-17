@@ -1,0 +1,19 @@
+{
+  "name": "Vinayak Kundar | VK_OS v1.0",
+  "short_name": "VK_OS",
+  "description": "Pokémon emulator-inspired portfolio of Vinayak Kundar — Computer Engineering Student, AI Builder, Community Leader.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06241f",
+  "theme_color": "#06241f",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["portfolio", "technology", "development"],
+  "lang": "en-US"
+}

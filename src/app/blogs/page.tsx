@@ -2,11 +2,10 @@ import type { Metadata } from 'next'
 import { getBlogs } from '@/lib/content-data'
 import { BlogCard } from '@/components/blog/BlogCard'
 import { FileText } from 'lucide-react'
+import { blogsSEO } from '@/lib/seo'
+import { BreadcrumbJsonLd } from '@/components/shared/JsonLd'
 
-export const metadata: Metadata = {
-  title: 'Blogs',
-  description: 'Engineering thoughts, tutorials, and insights by Vinayak Kundar.',
-}
+export const metadata: Metadata = blogsSEO
 
 export default async function BlogsPage() {
   const blogs = await getBlogs()
@@ -16,9 +15,13 @@ export default async function BlogsPage() {
 
   return (
     <div className="p-4 md:p-8 lg:p-12 space-y-6">
+      <BreadcrumbJsonLd items={[
+        { name: 'Home', item: '/' },
+        { name: 'Blogs', item: '/blogs' },
+      ]} />
       <header className="mb-6 border-b-2 border-primary pb-3">
         <h1 className="text-headline-lg-mobile md:text-headline-lg text-primary uppercase flex items-center gap-3">
-          <FileText size={32} className="text-tertiary-container" />
+          <FileText size={32} className="text-tertiary-container" aria-hidden="true" />
           Blogs
         </h1>
         <p className="text-body-lg text-on-surface-variant mt-2">
