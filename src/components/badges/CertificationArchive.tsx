@@ -586,8 +586,9 @@ export function CertificationArchive({ certifications }: CertificationArchivePro
                   {selectedCert.rarity.toUpperCase()} BADGE
                 </span>
                 <button
+                  type="button"
                   onClick={handleCloseModal}
-                  className="p-1.5 rounded border border-outline-variant bg-surface hover:bg-surface-container-high transition-colors text-on-surface-variant ml-auto"
+                  className="p-1.5 rounded border border-outline-variant bg-surface hover:bg-surface-container-high transition-colors text-on-surface-variant cursor-pointer"
                   aria-label="Close modal"
                 >
                   <X size={14} />
