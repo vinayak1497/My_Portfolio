@@ -56,13 +56,13 @@ export default function AboutPage() {
         </div>
         <div className="border-dialogue bg-surface p-3 shadow-8bit-sm text-center">
           <Award size={24} className="mx-auto text-secondary mb-1" aria-hidden="true" />
-          <p className="font-mono text-xs font-bold text-primary">GDG On Campus Lead</p>
+          <p className="font-mono text-xs font-bold text-primary">GDG On Campus Head of Operations</p>
           <p className="font-mono text-[10px] text-on-surface-variant">APSIT Chapter</p>
         </div>
         <div className="border-dialogue bg-surface p-3 shadow-8bit-sm text-center">
           <Code size={24} className="mx-auto text-tertiary-container mb-1" aria-hidden="true" />
           <p className="font-mono text-xs font-bold text-primary">10+ Projects</p>
-          <p className="font-mono text-[10px] text-on-surface-variant">AI, Web3, IoT</p>
+          <p className="font-mono text-[10px] text-on-surface-variant">AI, Automation</p>
         </div>
         <div className="border-dialogue bg-surface p-3 shadow-8bit-sm text-center">
           <MapPin size={24} className="mx-auto text-on-surface-variant mb-1" aria-hidden="true" />
@@ -81,8 +81,8 @@ export default function AboutPage() {
                 <h3 className="font-mono text-xs font-bold text-primary uppercase">Bachelor of Engineering</h3>
                 <p className="font-mono text-[11px] text-secondary font-bold">Computer Engineering</p>
                 <p className="font-mono text-[10px] text-on-surface-variant">APSIT (University of Mumbai)</p>
-                <p className="font-mono text-[10px] text-on-surface-variant">GPA: 8.5/10.0</p>
-                <p className="font-mono text-[10px] text-on-surface-variant">Expected: May 2026</p>
+                <p className="font-mono text-[10px] text-on-surface-variant">GPA: 9.822/10.0</p>
+                <p className="font-mono text-[10px] text-on-surface-variant">Year of Graduation: May 2027</p>
               </div>
             </div>
           </div>
@@ -94,7 +94,7 @@ export default function AboutPage() {
               <MapPin size={20} className="text-primary shrink-0 mt-0.5" aria-hidden="true" />
               <div>
                 <h3 className="font-mono text-xs font-bold text-primary uppercase">Location</h3>
-                <p className="font-mono text-[11px] text-on-surface">Thane, Mumbai</p>
+                <p className="font-mono text-[11px] text-on-surface">Vartak Nagar, Thane, Mumbai</p>
                 <p className="font-mono text-[10px] text-on-surface-variant">Maharashtra, India — 400604</p>
                 <p className="font-mono text-[10px] text-on-surface-variant mt-2">
                   Open to remote opportunities, hackathons, and collaborative projects.
@@ -111,23 +111,23 @@ export default function AboutPage() {
           <ul className="space-y-3 font-mono text-xs">
             <li className="flex gap-3 items-start">
               <ChevronRight size={14} className="text-secondary shrink-0 mt-0.5" aria-hidden="true" />
-              <span><strong className="text-primary">GDG On Campus Lead</strong> at APSIT — Organized multiple tech events, workshops, and hackathons, impacting hundreds of students.</span>
+              <span><strong className="text-primary">GDG On Campus Head of Operations</strong> at APSIT — Organized multiple tech events, workshops, and hackathons, impacting hundreds of students.</span>
             </li>
             <li className="flex gap-3 items-start">
               <ChevronRight size={14} className="text-secondary shrink-0 mt-0.5" aria-hidden="true" />
-              <span><strong className="text-primary">Hackathon Finalist</strong> — Recognized in multiple competitive programming and innovation challenges.</span>
+              <span><strong className="text-primary">Hackathon Finalist</strong> — Recognized in multiple competitive programming and innovation challenges. Won Cipherium hackathon, top 3 at VJTI, Top 10 at NMIMS</span>
             </li>
             <li className="flex gap-3 items-start">
               <ChevronRight size={14} className="text-secondary shrink-0 mt-0.5" aria-hidden="true" />
-              <span><strong className="text-primary">Google Cloud Digital Leader</strong> — Certified in cloud architecture and digital transformation.</span>
+              <span><strong className="text-primary">Google Cloud Digital Leader</strong> — Certified in cloud architecture and digital transformation. Actively participating in Google Arcade challenges</span>
             </li>
             <li className="flex gap-3 items-start">
               <ChevronRight size={14} className="text-secondary shrink-0 mt-0.5" aria-hidden="true" />
-              <span><strong className="text-primary">Community Leadership</strong> — Worked with Friendly Faces NGO, organized blood donation camps and social initiatives.</span>
+              <span><strong className="text-primary">Community Leadership</strong> — Co-Founded Friendly Faces NGO, organized 4 blood donation camps, 1 Eye checkup camp, 1 flood relief camp to help 400+ lives in chiplun in 2020 and many other social initiatives.</span>
             </li>
             <li className="flex gap-3 items-start">
               <ChevronRight size={14} className="text-secondary shrink-0 mt-0.5" aria-hidden="true" />
-              <span><strong className="text-primary">Full Stack Developer</strong> — Built 10+ production-grade applications across AI, IoT, FinTech, and Web3 domains.</span>
+              <span><strong className="text-primary">Technical Content creator</strong> — Apart from building production grade software, I write many technical blogs at dev.io and other platform, actively participating in meetups in mumbai every weekend and posting about it in linkedin.</span>
             </li>
           </ul>
         </div>
