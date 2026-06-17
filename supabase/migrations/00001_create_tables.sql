@@ -156,6 +156,7 @@ CREATE TABLE internships (
   skills JSONB NOT NULL DEFAULT '[]',
   hours INTEGER NOT NULL DEFAULT 0,
   certificate_url TEXT,
+  date DATE NOT NULL DEFAULT CURRENT_DATE,
   content TEXT NOT NULL DEFAULT '',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -164,6 +165,7 @@ CREATE TABLE internships (
 CREATE INDEX idx_internships_slug ON internships (slug);
 CREATE INDEX idx_internships_company ON internships (company);
 CREATE INDEX idx_internships_status ON internships (status);
+CREATE INDEX idx_internships_date ON internships (date DESC);
 
 -- ============================================
 -- LEADERSHIP
@@ -182,6 +184,7 @@ CREATE TABLE leadership (
   volunteers_managed INTEGER NOT NULL DEFAULT 0,
   initiative_type TEXT NOT NULL DEFAULT '',
   xp INTEGER NOT NULL DEFAULT 0,
+  date DATE NOT NULL DEFAULT CURRENT_DATE,
   content TEXT NOT NULL DEFAULT '',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -190,6 +193,7 @@ CREATE TABLE leadership (
 CREATE INDEX idx_leadership_slug ON leadership (slug);
 CREATE INDEX idx_leadership_organization ON leadership (organization);
 CREATE INDEX idx_leadership_xp ON leadership (xp DESC);
+CREATE INDEX idx_leadership_date ON leadership (date DESC);
 
 -- ============================================
 -- MEDIA
@@ -231,6 +235,7 @@ CREATE TABLE certificates (
   thumbnail_url TEXT,
   featured BOOLEAN NOT NULL DEFAULT false,
   published BOOLEAN NOT NULL DEFAULT true,
+  date DATE NOT NULL DEFAULT CURRENT_DATE,
   content TEXT NOT NULL DEFAULT '',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -241,6 +246,7 @@ CREATE INDEX idx_certificates_slug ON certificates (slug);
 CREATE INDEX idx_certificates_issuer ON certificates (issuer);
 CREATE INDEX idx_certificates_published ON certificates (published) WHERE published = true;
 CREATE INDEX idx_certificates_featured ON certificates (featured) WHERE featured = true;
+CREATE INDEX idx_certificates_date ON certificates (date DESC);
 
 -- ============================================
 -- UPDATED_AT TRIGGER FUNCTION
