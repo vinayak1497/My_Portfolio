@@ -59,7 +59,7 @@ export default function ResumePage() {
                 </div>
                 <div>
                   <span className="text-on-surface-variant">ID NO:</span>
-                  <p className="font-bold">#202425</p>
+                  <p className="font-bold">#260304</p>
                 </div>
                 <div>
                   <span className="text-on-surface-variant">LEVEL:</span>
@@ -91,7 +91,7 @@ export default function ResumePage() {
               <div>
                 <span className="text-on-surface-variant block text-[10px]">EMAIL ADDRESS:</span>
                 <a href="mailto:vinayakumleshkundar@gmail.com" className="text-primary hover:underline font-bold" rel="me">
-                  vinayakumleshkundar@gmail.com
+                  vinayak.kundar.official@gmail.com
                 </a>
               </div>
               <div>
@@ -129,10 +129,10 @@ export default function ResumePage() {
                   {/* Job Entry 1 */}
                   <div className="space-y-1">
                     <div className="flex justify-between flex-wrap gap-2 text-xs font-mono">
-                      <span className="font-bold text-primary uppercase">Full Stack Developer Intern</span>
-                      <span className="text-on-surface-variant">JUNE 2024 - AUG 2024</span>
+                      <span className="font-bold text-primary uppercase">Artifical Intelligence Intern</span>
+                      <span className="text-on-surface-variant">JUNE 2026 - July 2026</span>
                     </div>
-                    <p className="font-mono text-[10px] text-secondary font-bold uppercase">Tech Guild Solutions</p>
+                    <p className="font-mono text-[10px] text-secondary font-bold uppercase">Decode Labs</p>
                     <ul className="list-disc pl-4 mt-2 font-mono text-[11px] text-on-surface-variant space-y-1 leading-relaxed">
                       <li>Designed and deployed Next.js web applications, improving client portal responsiveness.</li>
                       <li>Architected PostgreSQL schemas and optimized API endpoints, reducing average queries by 20%.</li>
@@ -169,8 +169,8 @@ export default function ResumePage() {
                 <div>
                   <span className="font-bold text-on-surface block uppercase">Bachelor of Engineering</span>
                   <span className="text-secondary text-[10px] font-bold block">Computer Engineering</span>
-                  <p className="text-[10px] text-on-surface-variant/75 mt-1">GPA: 8.5/10.0</p>
-                  <p className="text-[10px] text-on-surface-variant/75">Expected Graduation: May 2026</p>
+                  <p className="text-[10px] text-on-surface-variant/75 mt-1">GPA: 9.822/10.0</p>
+                  <p className="text-[10px] text-on-surface-variant/75">Expected Graduation: May 2027</p>
                 </div>
               </div>
             </div>

@@ -56,8 +56,8 @@ export default function AboutPage() {
         </div>
         <div className="border-dialogue bg-surface p-3 shadow-8bit-sm text-center">
           <Award size={24} className="mx-auto text-secondary mb-1" aria-hidden="true" />
-          <p className="font-mono text-xs font-bold text-primary">GDG On Campus Head of Operations</p>
-          <p className="font-mono text-[10px] text-on-surface-variant">APSIT Chapter</p>
+          <p className="font-mono text-xs font-bold text-primary">Google Developer's Group on Campus</p>
+          <p className="font-mono text-[10px] text-on-surface-variant">Head of Operations</p>
         </div>
         <div className="border-dialogue bg-surface p-3 shadow-8bit-sm text-center">
           <Code size={24} className="mx-auto text-tertiary-container mb-1" aria-hidden="true" />
@@ -95,7 +95,7 @@ export default function AboutPage() {
               <div>
                 <h3 className="font-mono text-xs font-bold text-primary uppercase">Location</h3>
                 <p className="font-mono text-[11px] text-on-surface">Vartak Nagar, Thane, Mumbai</p>
-                <p className="font-mono text-[10px] text-on-surface-variant">Maharashtra, India — 400604</p>
+                <p className="font-mono text-[10px] text-on-surface-variant">Maharashtra, India — 400606</p>
                 <p className="font-mono text-[10px] text-on-surface-variant mt-2">
                   Open to remote opportunities, hackathons, and collaborative projects.
                 </p>
