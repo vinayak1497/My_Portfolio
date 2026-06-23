@@ -42,7 +42,7 @@ export function Footer() {
             <Twitter size={18} />
           </Link>
           <Link
-            href="https://dev.to/vinayak1497"
+            href="https://dev.to/vinayak_kundar"
             target="_blank"
             rel="noopener noreferrer me"
             className="text-on-surface-variant hover:text-secondary transition-colors font-mono text-xs font-bold"
@@ -51,7 +51,7 @@ export function Footer() {
             DEV
           </Link>
           <Link
-            href="https://hashnode.com/@vinayak1497"
+            href="https://hashnode.com/@vinayak-kundar"
             target="_blank"
             rel="noopener noreferrer me"
             className="text-on-surface-variant hover:text-secondary transition-colors font-mono text-xs font-bold"

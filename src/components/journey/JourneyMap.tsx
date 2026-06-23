@@ -29,14 +29,25 @@ const journeyNodes: JourneyNode[] = [
     locationName: 'Origin Town',
     icon: '🏠',
     coords: { x: 15, y: 80 },
-    description: 'Where the journey started. Picked up coding, compiled the first C++ hello-world script, and decided to dive headfirst into Computer Engineering.',
+    description:
+      'The beginning of Vinayak Kundar’s journey, a curious kid from Mumbai who would eventually become an engineer, builder, and community leader.',
     dialogue: [
-      'Welcome to Origin Town, trainer!',
-      'Here, you found your first computer and discovered the magical arts of programming.',
-      'Obtained starter item: "C++ Programming Handbook"!'
+      'Welcome, Trainer! My name is Vinayak Kundar. I am a Computer Engineering student from Mumbai, Maharashtra, India.',
+      'Every trainer starts somewhere. Mine began in a humble Tulu family with roots in coastal Karnataka. Those roots taught me discipline, gratitude, and the importance of helping others.',
+      'Growing up in Mumbai, the City of Dreams, I learned that opportunities are never given — they are earned. Curiosity became my first superpower.',
+      'Long before hackathons, AI agents, and leadership roles, I was simply a student fascinated by technology and determined to build something meaningful.',
+      'Current Quest: Turn curiosity into impact and create technology that improves lives.'
     ],
-    achievements: ['First Compile', 'CS Student Class unlocked'],
-    skills: ['C++', 'Java', 'Algorithms 101'],
+    achievements: [
+      'Origin Story Unlocked',
+      'Dream Chaser Badge',
+      'Curiosity Trait Acquired'
+    ],
+    skills: [
+      'Persistence',
+      'Curiosity',
+      'Problem Solving'
+    ],
     completed: true,
   },
   {
@@ -44,22 +55,34 @@ const journeyNodes: JourneyNode[] = [
     title: "Scholar's Route",
     level: 'LVL 5',
     locationName: "Scholar's Route",
-    icon: '🌿',
+    icon: '📚',
     coords: { x: 30, y: 55 },
-    description: 'Diving deep into Computer Science fundamentals. Mastered Operating Systems, DBMS, Networks, and computational theories.',
+    description:
+      'The chapter where discipline met ambition. Years of study, competitive exams, and academic consistency laid the foundation for everything that followed.',
     dialogue: [
-      'A wild theory appeared! You studied Processes, Semaphores, and TCP/IP handshakes.',
-      'Your fundamentals stats rose sharply!',
-      'Learned skill: "Systems Thinking"!'
+      'The Scholar\'s Route is where every challenge began to feel bigger. School exams turned into competitive battles, and every mark mattered.',
+      'After years of dedication, I achieved 93% in SSC and secured a 97.126 percentile in MHT-CET, unlocking my path into Computer Engineering.',
+      'This journey taught me that success rarely comes from talent alone. Consistency, patience, and showing up every day became my strongest abilities.',
+      'Soon after entering engineering, I discovered that learning was no longer about memorizing answers — it was about understanding how the world works through technology.',
+      'New Quest Unlocked: Become an Engineer capable of building solutions that create real-world impact.'
     ],
-    achievements: ['Deep Explorer', 'Deans List Badge'],
-    skills: ['Operating Systems', 'DBMS', 'Computer Networks'],
+    achievements: [
+      '93% SSC Achievement',
+      '97.126 Percentile MHT-CET',
+      'Computer Engineering Admission'
+    ],
+    skills: [
+      'Discipline',
+      'Analytical Thinking',
+      'Time Management',
+      'Academic Excellence'
+    ],
     completed: true,
   },
   {
     id: 'engineering_city',
     title: 'Engineering City',
-    level: 'LVL 12',
+    level: 'LVL 20',
     locationName: 'Engineering City',
     icon: '🏢',
     coords: { x: 45, y: 30 },
@@ -76,7 +99,7 @@ const journeyNodes: JourneyNode[] = [
   {
     id: 'tech_guild',
     title: 'Tech Guild Arc',
-    level: 'LVL 18',
+    level: 'LVL 45',
     locationName: 'Tech Guild Arc',
     icon: '⚔️',
     coords: { x: 60, y: 45 },
@@ -93,7 +116,7 @@ const journeyNodes: JourneyNode[] = [
   {
     id: 'community_guild',
     title: 'Community Guild',
-    level: 'LVL 20',
+    level: 'LVL 70',
     locationName: 'Community Guild',
     icon: '🛡️',
     coords: { x: 75, y: 70 },
@@ -110,7 +133,7 @@ const journeyNodes: JourneyNode[] = [
   {
     id: 'ai_frontier',
     title: 'AI Frontier',
-    level: 'LVL 24',
+    level: 'LVL 99',
     locationName: 'AI Frontier',
     icon: '⚡',
     coords: { x: 88, y: 25 },
