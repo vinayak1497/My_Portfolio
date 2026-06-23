@@ -40,8 +40,8 @@ export async function POST(req: Request) {
       const { data, error } = await resend.emails.send({
         from: 'Portfolio Contact <onboarding@resend.dev>',
 
-        // Your inbox
-        to: 'vinayak.kundar.official@gmail.com',
+        // Resend test domain only delivers to the account owner's email
+        to: 'kundarvinayak2004@gmail.com',
 
         // Allows direct reply from Gmail
         replyTo: email,
