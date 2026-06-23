@@ -26,33 +26,29 @@ export default function ContactPage() {
     setStatus('loading')
 
     try {
-      const subject = encodeURIComponent(formData.subject)
-
-      const body = encodeURIComponent(`
-Name: ${formData.name}
-Email: ${formData.email}
-
-Message:
-${formData.message}
-      `)
-
-      const mailtoUrl =
-        `mailto:vinayak.kundar.official@gmail.com?subject=${subject}&body=${body}`
-
-      window.location.href = mailtoUrl
-
-      setStatus('success')
-
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       })
+
+      if (res.ok) {
+        setStatus('success')
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: '',
+        })
+      } else {
+        const data = await res.json()
+        setStatus('error')
+        setStatusMsg(data.error || 'Failed to send message.')
+      }
     } catch (err) {
       console.error(err)
       setStatus('error')
-      setStatusMsg('Unable to open email client.')
+      setStatusMsg('Network error. Please try again.')
     }
   }
 
@@ -91,12 +87,12 @@ ${formData.message}
               </div>
 
               <h2 className="font-mono text-headline-sm font-bold text-primary uppercase">
-                COMMS READY!
+                COMMS CONNECTED!
               </h2>
 
               <p className="font-mono text-xs text-on-surface-variant max-w-sm mx-auto leading-relaxed">
-                Your email client has been opened with a pre-filled message.
-                Click Send to transmit your signal.
+                Your message has been transmitted successfully. Trainer Vinayak
+                will respond at his earliest convenience.
               </p>
 
               <div className="pt-2">
@@ -192,8 +188,8 @@ ${formData.message}
                       subject: e.target.value,
                     })
                   }
-                  placeholder="ENTER SUBJECT"
-                  className="w-full px-3 py-2 border-2 border-primary bg-surface font-bold focus:outline-none focus:border-secondary placeholder:text-on-surface-variant/30 uppercase"
+                    placeholder="SELECT SUBJECT MATTER"
+                    className="w-full px-3 py-2 border-2 border-primary bg-surface font-bold focus:outline-none focus:border-secondary placeholder:text-on-surface-variant/30 uppercase"
                 />
               </div>
 
@@ -230,8 +226,8 @@ ${formData.message}
                 >
                   <Send size={14} aria-hidden="true" />
                   {status === 'loading'
-                    ? 'OPENING MAIL CLIENT...'
-                    : 'OPEN EMAIL CLIENT'}
+                    ? 'TRANSMITTING...'
+                    : 'TRANSMIT SIGNAL'}
                 </RetroButton>
               </div>
             </form>

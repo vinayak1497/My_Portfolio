@@ -97,16 +97,18 @@ export async function POST(req: Request) {
       })
     }
 
-    // Development fallback when Resend is not configured
-    console.log(
-      'Resend API key missing. Message logged locally instead.'
+    // Resend API key not configured
+    console.error(
+      'RESEND_API_KEY is not configured. Email not sent.'
     )
 
-    return NextResponse.json({
-      success: true,
-      message:
-        'Development mode: RESEND_API_KEY not configured. Message logged to server console.',
-    })
+    return NextResponse.json(
+      {
+        error:
+          'Email service is not configured. Please set RESEND_API_KEY.',
+      },
+      { status: 500 }
+    )
   } catch (error) {
     console.error('Contact API Error:', error)
 
