@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Terminal, Settings, Search, Volume2, VolumeX, Menu, X } from 'lucide-react'
+import { Terminal, Settings, Volume2, VolumeX, Menu, X } from 'lucide-react'
 import { useUIStore } from '@/stores/ui-store'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
@@ -19,7 +19,7 @@ const navLinks = [
 
 export function Header() {
   const pathname = usePathname()
-  const { toggleTerminal, toggleSearch, isSoundEnabled, toggleSound, isMobileNavOpen, toggleMobileNav } = useUIStore()
+  const { toggleTerminal, isSoundEnabled, toggleSound, isMobileNavOpen, toggleMobileNav } = useUIStore()
   const { theme, setTheme } = useTheme()
 
   return (
@@ -50,13 +50,7 @@ export function Header() {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
-          <button
-            onClick={toggleSearch}
-            className="text-on-primary/70 hover:text-on-primary p-1.5 hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
-            aria-label="Search"
-          >
-            <Search size={18} aria-hidden="true" />
-          </button>
+
           <button
             onClick={toggleTerminal}
             className="text-on-primary/70 hover:text-on-primary p-1.5 hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
