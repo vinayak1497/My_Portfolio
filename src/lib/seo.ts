@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
-import { absoluteUrl } from './utils'
+import { absoluteUrl, SITE_URL } from './utils'
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://vinayak-kundar.vercel.app'
+// Re-exported so existing imports of `SITE_URL` from '@/lib/seo' keep working,
+// while the single source of truth lives in '@/lib/utils'.
+export { SITE_URL }
 export const SITE_NAME = 'Vinayak Kundar | VK_OS v1.0'
 export const SITE_DESCRIPTION =
   'Official portfolio of Vinayak Kundar — Computer Engineering student at APSIT (Mumbai University), AI builder, hackathon finalist, community leader, and full stack developer.'
@@ -40,6 +42,7 @@ interface SEOProps {
   noArchive?: boolean
   locale?: string
   alternates?: Record<string, string>
+  noFollow?: boolean
 }
 
 export function generateSEOMetadata({
@@ -59,7 +62,10 @@ export function generateSEOMetadata({
   alternates,
 }: SEOProps): Metadata {
   const canonicalPath = path || (slug ? `/${slug}` : '/')
-  const canonical = absoluteUrl(canonicalPath).replace(/\/$/, '') || `${SITE_URL}${canonicalPath}`.replace(/\/$/, '')
+  const canonical = (() => {
+    const url = absoluteUrl(canonicalPath)
+    return url.replace(/\/$/, '') || `${SITE_URL}${canonicalPath}`.replace(/\/$/, '')
+  })()
 
   const ogImages = images && images.length > 0
     ? images

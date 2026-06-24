@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { EmulatorWindow } from '@/components/shared/EmulatorWindow'
 import { RetroButton } from '@/components/shared/RetroButton'
 import { Mail, Send, CheckCircle2, AlertCircle } from 'lucide-react'
-import { ContactPageJsonLd } from '@/components/shared/JsonLd'
+import { ContactPageJsonLd, BreadcrumbJsonLd } from '@/components/shared/JsonLd'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -54,6 +54,10 @@ export default function ContactPage() {
 
   return (
     <div className="p-4 md:p-8 lg:p-12 space-y-6">
+      <BreadcrumbJsonLd items={[
+        { name: 'Home', item: '/' },
+        { name: 'Contact Vinayak Kundar', item: '/contact' },
+      ]} />
       <ContactPageJsonLd />
 
       <header className="mb-6 border-b-2 border-primary pb-3">
@@ -63,12 +67,13 @@ export default function ContactPage() {
             className="text-tertiary-container"
             aria-hidden="true"
           />
-          Contact
+          Contact Vinayak Kundar
         </h1>
 
         <p className="text-body-lg text-on-surface-variant mt-2">
-          Establish communications with Trainer Vinayak. Submit query
-          parameters below.
+          Get in touch with Vinayak Kundar — Computer Engineering student at APSIT (University of Mumbai),
+          AI builder, full stack developer, and GDG On Campus Lead. Available for collaboration, hackathons,
+          speaking engagements, and opportunities.
         </p>
       </header>
 

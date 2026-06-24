@@ -31,6 +31,9 @@ export default function robots(): MetadataRoute.Robots {
           '/404',
           '/500',
           '/_next/',
+          '/_next/static/',
+          '/_next/static/chunks/',
+          '/_next/static/media/',
         ],
       },
       {
@@ -60,11 +63,31 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
       {
+        userAgent: 'Googlebot-Image',
+        allow: [
+          '/',
+        ],
+      },
+      {
+        userAgent: 'Googlebot-Video',
+        allow: [
+          '/',
+        ],
+      },
+      {
         userAgent: 'GPTBot',
         disallow: '/',
       },
       {
         userAgent: 'CCBot',
+        disallow: '/',
+      },
+      {
+        userAgent: 'Claude-Web',
+        disallow: '/',
+      },
+      {
+        userAgent: 'anthropic-ai',
         disallow: '/',
       },
     ],

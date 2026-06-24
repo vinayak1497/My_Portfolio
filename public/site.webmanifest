@@ -1,7 +1,7 @@
 {
-  "name": "Vinayak Kundar | VK_OS v1.0",
+  "name": "Vinayak Kundar — Computer Engineering Student, AI Builder & Full Stack Developer",
   "short_name": "VK_OS",
-  "description": "Pokémon emulator-inspired portfolio of Vinayak Kundar — Computer Engineering Student, AI Builder, Community Leader.",
+  "description": "Official portfolio of Vinayak Kundar — Computer Engineering student at APSIT (Mumbai University), AI builder, hackathon finalist, community leader, and full stack developer.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#06241f",
@@ -9,11 +9,24 @@
   "orientation": "any",
   "icons": [
     {
+      "src": "/icon.svg",
+      "sizes": "196x196",
+      "type": "image/svg+xml"
+    },
+    {
       "src": "/favicon.ico",
       "sizes": "48x48",
       "type": "image/x-icon"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ],
-  "categories": ["portfolio", "technology", "development"],
-  "lang": "en-US"
+  "categories": ["portfolio", "technology", "development", "artificial-intelligence"],
+  "lang": "en-US",
+  "scope": "/",
+  "id": "/"
 }

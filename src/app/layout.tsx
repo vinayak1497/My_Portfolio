@@ -9,7 +9,7 @@ import { Footer } from '@/components/layout/Footer'
 import { Terminal } from '@/components/terminal/Terminal'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { PersonJsonLd, WebSiteJsonLd } from '@/components/shared/JsonLd'
+import { PersonJsonLd, WebSiteJsonLd, OrganizationJsonLd } from '@/components/shared/JsonLd'
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, CREATOR, KEYWORDS_BASE, TWITTER_HANDLE } from '@/lib/seo'
 import './globals.css'
 
@@ -64,8 +64,19 @@ export const metadata: Metadata = {
     email: true,
     address: false,
   },
+  manifest: '/site.webmanifest',
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '48x48' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
+  verification: {
+    // Add the Google Search Console verification token here once the property
+    // is created (Settings → Ownership verification → HTML tag).
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   },
 }
 
@@ -90,13 +101,17 @@ export default function RootLayout({
       className={`${ibmPlexSans.variable} ${spaceMono.variable}`}
       suppressHydrationWarning
     >
-      <head>
-        <link rel="canonical" href={SITE_URL} />
-      </head>
-      <body className="min-h-screen flex flex-col">
-        <ThemeProvider>
+        <body className="min-h-screen flex flex-col">
+          {/* Preconnect to critical origins for performance */}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          <link rel="dns-prefetch" href="https://va.vercel-scripts.com/" />
+          <link rel="dns-prefetch" href="https://gbbgllodqxofvkezcpyz.supabase.co" />
+
+          <ThemeProvider>
           <PersonJsonLd />
           <WebSiteJsonLd />
+          <OrganizationJsonLd />
 
           {/* CRT Scanline Overlay */}
           <CRTOverlay />

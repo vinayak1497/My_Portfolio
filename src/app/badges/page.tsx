@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import {
   getCertifications,
   getHackathons,
@@ -16,7 +17,7 @@ import { LeagueAchievements } from '@/components/badges/LeagueAchievements'
 import { CorporateQuests } from '@/components/badges/CorporateQuests'
 import { CommunityLeadership } from '@/components/badges/CommunityLeadership'
 import { MediaRecognition } from '@/components/badges/MediaRecognition'
-import { Award } from 'lucide-react'
+import { Award, Map, FileText, BookOpen } from 'lucide-react'
 import { badgesSEO } from '@/lib/seo'
 import { BreadcrumbJsonLd, EducationalOccupationalCredentialJsonLd, EventJsonLd } from '@/components/shared/JsonLd'
 
@@ -99,9 +100,35 @@ export default async function BadgesPage() {
           Trainer Progression Hub
         </h1>
         <p className="text-body-lg text-on-surface-variant mt-2">
-          Career profile, credentials, skills, and achievements — explorer edition.
+          Certifications, hackathons, internships, leadership, and skills of Vinayak Kundar — Computer Engineering
+          student at APSIT (University of Mumbai), AI builder, and full stack developer.
         </p>
       </header>
+
+      {/* Internal links */}
+      <nav className="flex flex-wrap gap-3 mb-4" aria-label="Related pages">
+        <Link
+          href="/journey"
+          className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold text-secondary uppercase border border-secondary px-2 py-1 hover:bg-secondary hover:text-on-secondary transition-colors"
+        >
+          <Map size={12} aria-hidden="true" />
+          Career Journey
+        </Link>
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold text-secondary uppercase border border-secondary px-2 py-1 hover:bg-secondary hover:text-on-secondary transition-colors"
+        >
+          <FileText size={12} aria-hidden="true" />
+          Projects
+        </Link>
+        <Link
+          href="/about"
+          className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold text-secondary uppercase border border-secondary px-2 py-1 hover:bg-secondary hover:text-on-secondary transition-colors"
+        >
+          <BookOpen size={12} aria-hidden="true" />
+          About Vinayak
+        </Link>
+      </nav>
 
       {/* Section 1: Trainer Profile Dashboard */}
       <section id="profile" aria-label="Trainer profile dashboard">

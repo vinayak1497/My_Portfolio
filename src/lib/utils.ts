@@ -13,8 +13,27 @@ export function formatDate(date: string) {
   })
 }
 
+/**
+ * Canonical production origin for the site. Resolution order:
+ *   1. NEXT_PUBLIC_SITE_URL (explicit override)
+ *   2. VERCEL_PROJECT_PRODUCTION_URL (set automatically on Vercel production)
+ *   3. Hard-coded production domain — guarantees we NEVER emit a localhost URL
+ *      in canonical / OpenGraph / sitemap output, even if env vars are missing.
+ */
+const ENV_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL
+const VERCEL_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : ''
+
+export const SITE_URL: string = (
+  ENV_SITE_URL ||
+  VERCEL_URL ||
+  'https://vinayak-kundar.vercel.app'
+).replace(/\/$/, '')
+
 export function absoluteUrl(path: string) {
-  return `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}${path}`
+  const normalizedPath = path === '' || path.startsWith('/') ? path : `/${path}`
+  return `${SITE_URL}${normalizedPath}`
 }
 
 /**

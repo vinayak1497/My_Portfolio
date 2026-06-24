@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { EmulatorWindow } from '@/components/shared/EmulatorWindow'
 import { RetroButton } from '@/components/shared/RetroButton'
-import { ScrollText, Download, Briefcase, GraduationCap, Code } from 'lucide-react'
+import { ScrollText, Download, Briefcase, GraduationCap, Code, Award, Map, ExternalLink } from 'lucide-react'
 import { resumeSEO } from '@/lib/seo'
 import { BreadcrumbJsonLd } from '@/components/shared/JsonLd'
 
@@ -12,16 +13,18 @@ export default function ResumePage() {
     <div className="p-4 md:p-8 lg:p-12 space-y-6">
       <BreadcrumbJsonLd items={[
         { name: 'Home', item: '/' },
-        { name: 'Resume', item: '/resume' },
+        { name: 'Resume of Vinayak Kundar', item: '/resume' },
       ]} />
-      <header className="mb-6 border-b-2 border-primary pb-3 flex justify-between items-center">
+
+      <header className="mb-6 border-b-2 border-primary pb-3 flex justify-between items-center flex-wrap gap-4">
         <div>
           <h1 className="text-headline-lg-mobile md:text-headline-lg text-primary uppercase flex items-center gap-3">
             <ScrollText size={32} className="text-tertiary-container" aria-hidden="true" />
-            Trainer Card
+            Resume of Vinayak Kundar
           </h1>
           <p className="text-body-lg text-on-surface-variant mt-2">
-            Official league credentials and full technical history parameters.
+            Official resume of Vinayak Kundar — Computer Engineering student at APSIT (Mumbai University),
+            AI builder, full stack developer, and community leader based in Thane, Mumbai.
           </p>
         </div>
         <a href="/vinayak_resume.pdf" download className="hidden sm:block" aria-label="Download resume PDF">
@@ -31,6 +34,31 @@ export default function ResumePage() {
           </RetroButton>
         </a>
       </header>
+
+      {/* Internal links */}
+      <nav className="flex flex-wrap gap-3" aria-label="Related pages">
+        <Link
+          href="/about"
+          className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold text-secondary uppercase border border-secondary px-2 py-1 hover:bg-secondary hover:text-on-secondary transition-colors"
+        >
+          <ExternalLink size={12} aria-hidden="true" />
+          About Vinayak Kundar
+        </Link>
+        <Link
+          href="/badges"
+          className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold text-secondary uppercase border border-secondary px-2 py-1 hover:bg-secondary hover:text-on-secondary transition-colors"
+        >
+          <Award size={12} aria-hidden="true" />
+          Certifications & Badges
+        </Link>
+        <Link
+          href="/journey"
+          className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold text-secondary uppercase border border-secondary px-2 py-1 hover:bg-secondary hover:text-on-secondary transition-colors"
+        >
+          <Map size={12} aria-hidden="true" />
+          Career Journey
+        </Link>
+      </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Side: Trainer Card Profile */}
@@ -91,7 +119,7 @@ export default function ResumePage() {
               <div>
                 <span className="text-on-surface-variant block text-[10px]">EMAIL ADDRESS:</span>
                 <a href="mailto:vinayakumleshkundar@gmail.com" className="text-primary hover:underline font-bold" rel="me">
-                  vinayak.kundar.official@gmail.com
+                  vinayakumleshkundar@gmail.com
                 </a>
               </div>
               <div>
@@ -106,7 +134,21 @@ export default function ResumePage() {
                   linkedin.com/in/vinayak-kundar
                 </a>
               </div>
+              <div>
+                <span className="text-on-surface-variant block text-[10px]">LOCATION:</span>
+                <p className="font-bold">Thane, Mumbai, Maharashtra, India</p>
+              </div>
             </div>
+          </div>
+
+          {/* Mobile Download Button */}
+          <div className="sm:hidden">
+            <a href="/vinayak_resume.pdf" download>
+              <RetroButton variant="secondary" className="w-full flex items-center justify-center gap-2">
+                <Download size={14} aria-hidden="true" />
+                DOWNLOAD PDF RESUME
+              </RetroButton>
+            </a>
           </div>
         </div>
 
@@ -120,17 +162,15 @@ export default function ResumePage() {
                   <Briefcase size={20} />
                 </div>
                 <div className="space-y-4 flex-1">
-                  <div>
-                    <h2 className="font-mono text-headline-sm font-bold text-primary uppercase">
-                      Professional Experience
-                    </h2>
-                  </div>
+                  <h2 className="font-mono text-headline-sm font-bold text-primary uppercase">
+                    Professional Experience
+                  </h2>
 
                   {/* Job Entry 1 */}
                   <div className="space-y-1">
                     <div className="flex justify-between flex-wrap gap-2 text-xs font-mono">
-                      <span className="font-bold text-primary uppercase">Artifical Intelligence Intern</span>
-                      <span className="text-on-surface-variant">JUNE 2026 - July 2026</span>
+                      <span className="font-bold text-primary uppercase">Artificial Intelligence Intern</span>
+                      <span className="text-on-surface-variant">JUNE 2026 - JULY 2026</span>
                     </div>
                     <p className="font-mono text-[10px] text-secondary font-bold uppercase">Decode Labs</p>
                     <ul className="list-disc pl-4 mt-2 font-mono text-[11px] text-on-surface-variant space-y-1 leading-relaxed">
@@ -169,7 +209,9 @@ export default function ResumePage() {
                 <div>
                   <span className="font-bold text-on-surface block uppercase">Bachelor of Engineering</span>
                   <span className="text-secondary text-[10px] font-bold block">Computer Engineering</span>
-                  <p className="text-[10px] text-on-surface-variant/75 mt-1">GPA: 9.822/10.0</p>
+                  <p className="text-[10px] text-on-surface-variant/75 mt-1">A. P. Shah Institute of Technology (APSIT)</p>
+                  <p className="text-[10px] text-on-surface-variant/75">University of Mumbai</p>
+                  <p className="text-[10px] text-on-surface-variant/75">GPA: 9.822/10.0</p>
                   <p className="text-[10px] text-on-surface-variant/75">Expected Graduation: May 2027</p>
                 </div>
               </div>
@@ -180,18 +222,52 @@ export default function ResumePage() {
               <div className="space-y-3 font-mono text-xs">
                 <h2 className="font-bold text-primary uppercase border-b border-primary/10 pb-1.5 flex items-center gap-2">
                   <Code size={16} aria-hidden="true" />
-                  Tech Capabilities
+                  Technical Skills
                 </h2>
                 <div className="flex flex-wrap gap-1.5">
                   <span className="bg-surface-variant border border-outline-variant px-2 py-0.5 text-[10px]">React/Next.js</span>
                   <span className="bg-surface-variant border border-outline-variant px-2 py-0.5 text-[10px]">Node.js</span>
                   <span className="bg-surface-variant border border-outline-variant px-2 py-0.5 text-[10px]">TypeScript</span>
                   <span className="bg-surface-variant border border-outline-variant px-2 py-0.5 text-[10px]">Python</span>
+                  <span className="bg-surface-variant border border-outline-variant px-2 py-0.5 text-[10px]">FastAPI</span>
                   <span className="bg-surface-variant border border-outline-variant px-2 py-0.5 text-[10px]">SQL/NoSQL</span>
+                  <span className="bg-surface-variant border border-outline-variant px-2 py-0.5 text-[10px]">Supabase</span>
                   <span className="bg-surface-variant border border-outline-variant px-2 py-0.5 text-[10px]">Gemini/LLMs</span>
                   <span className="bg-surface-variant border border-outline-variant px-2 py-0.5 text-[10px]">Git/GitHub</span>
+                  <span className="bg-surface-variant border border-outline-variant px-2 py-0.5 text-[10px]">Cloud Computing</span>
+                  <span className="bg-surface-variant border border-outline-variant px-2 py-0.5 text-[10px]">Machine Learning</span>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Certifications Summary */}
+          <div className="border-dialogue bg-surface p-4 shadow-8bit">
+            <div className="space-y-2 font-mono text-xs">
+              <h2 className="font-bold text-primary uppercase border-b border-primary/10 pb-1.5 flex items-center gap-2">
+                <Award size={16} aria-hidden="true" />
+                Certifications
+              </h2>
+              <div className="space-y-1.5">
+                <p className="text-on-surface">
+                  <span className="text-primary font-bold">Google Cloud Digital Leader</span>
+                  <span className="text-on-surface-variant"> — Google Cloud Skills Boost</span>
+                </p>
+                <p className="text-on-surface">
+                  <span className="text-primary font-bold">AWS Cloud Foundations</span>
+                  <span className="text-on-surface-variant"> — Amazon Web Services</span>
+                </p>
+                <p className="text-on-surface">
+                  <span className="text-primary font-bold">Google Arcade Program</span>
+                  <span className="text-on-surface-variant"> — Google Cloud</span>
+                </p>
+              </div>
+              <Link
+                href="/badges"
+                className="inline-flex items-center gap-1 font-mono text-[10px] font-bold text-secondary uppercase hover:text-primary transition-colors mt-2"
+              >
+                View all certifications →
+              </Link>
             </div>
           </div>
         </div>

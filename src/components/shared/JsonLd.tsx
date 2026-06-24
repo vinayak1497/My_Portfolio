@@ -1,13 +1,18 @@
 import { SITE_URL } from '@/lib/seo'
 
+// Stable @id values so every schema node on the site references the SAME
+// canonical entities (a connected knowledge graph rather than disconnected blobs).
+export const PERSON_ID = `${SITE_URL}/#person`
+export const WEBSITE_ID = `${SITE_URL}/#website`
+export const ORGANIZATION_ID = `${SITE_URL}/#organization`
+
 interface PersonSchema {
   name?: string
-  alternateName?: string
+  alternateName?: string | string[]
   jobTitle?: string
   description?: string
   image?: string
   sameAs?: string[]
-  alumniOf?: string
   knowsAbout?: string[]
   award?: string[]
   email?: string
@@ -39,7 +44,6 @@ export function PersonJsonLd({
     'https://dev.to/vinayak1497',
     'https://hashnode.com/@vinayak1497',
   ],
-  alumniOf = 'APSIT (University of Mumbai)',
   knowsAbout = [
     'Artificial Intelligence',
     'Full Stack Development',
@@ -62,17 +66,77 @@ export function PersonJsonLd({
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Person',
+    '@id': PERSON_ID,
     name,
-    alternateName,
+    alternateName: Array.isArray(alternateName)
+      ? alternateName
+      : [alternateName, 'Vinayak U. Kundar'],
+    givenName: 'Vinayak',
+    familyName: 'Kundar',
     jobTitle,
     description,
     url,
-    image,
+    mainEntityOfPage: SITE_URL,
+    image: {
+      '@type': 'ImageObject',
+      url: image,
+      width: 1200,
+      height: 630,
+    },
     sameAs,
-    alumniOf,
+    alumniOf: {
+      '@type': 'CollegeOrUniversity',
+      name: 'A. P. Shah Institute of Technology (APSIT)',
+      sameAs: 'https://www.apsit.edu.in/',
+      parentOrganization: {
+        '@type': 'CollegeOrUniversity',
+        name: 'University of Mumbai',
+        sameAs: 'https://mu.ac.in/',
+      },
+    },
+    memberOf: {
+      '@type': 'Organization',
+      name: 'Google Developer Groups On Campus, APSIT',
+    },
+    homeLocation: {
+      '@type': 'Place',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Thane',
+        addressRegion: 'Maharashtra',
+        addressCountry: 'IN',
+      },
+    },
+    nationality: {
+      '@type': 'Country',
+      name: 'India',
+    },
     knowsAbout,
+    knowsLanguage: ['English', 'Hindi', 'Marathi'],
     award,
     email,
+  }
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+}
+
+export function ProfilePageJsonLd({
+  dateModified,
+  dateCreated = '2025-05-30',
+}: {
+  dateModified?: string
+  dateCreated?: string
+} = {}) {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    '@id': `${SITE_URL}/#profilepage`,
+    url: SITE_URL,
+    name: 'Vinayak Kundar — Computer Engineering Student, AI Builder & Full Stack Developer',
+    dateCreated,
+    dateModified: dateModified || dateCreated,
+    isPartOf: { '@id': WEBSITE_ID },
+    about: { '@id': PERSON_ID },
+    mainEntity: { '@id': PERSON_ID },
   }
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 }
@@ -85,9 +149,15 @@ export function WebSiteJsonLd({
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': WEBSITE_ID,
     name,
+    alternateName: 'Vinayak Kundar Portfolio',
     url: SITE_URL,
     description,
+    inLanguage: 'en',
+    publisher: { '@id': PERSON_ID },
+    author: { '@id': PERSON_ID },
+    copyrightHolder: { '@id': PERSON_ID },
   }
   if (searchAction) {
     schema.potentialAction = {
@@ -124,6 +194,9 @@ export function BlogPostingJsonLd({
   dateModified,
   authorName = 'Vinayak Kundar',
   image,
+  keywords,
+  wordCount,
+  articleSection,
 }: {
   title: string
   description: string
@@ -132,30 +205,32 @@ export function BlogPostingJsonLd({
   dateModified?: string
   authorName?: string
   image?: string
+  keywords?: string[]
+  wordCount?: number
+  articleSection?: string
 }) {
+  const absUrl = url.startsWith('http') ? url : `${SITE_URL}${url}`
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: title,
     description,
-    url: url.startsWith('http') ? url : `${SITE_URL}${url}`,
+    url: absUrl,
     datePublished,
     dateModified: dateModified || datePublished,
-    author: {
-      '@type': 'Person',
-      name: authorName,
-      url: SITE_URL,
-    },
-    publisher: {
-      '@type': 'Person',
-      name: authorName,
-    },
+    inLanguage: 'en',
+    author: { '@id': PERSON_ID, '@type': 'Person', name: authorName, url: SITE_URL },
+    publisher: { '@id': PERSON_ID, '@type': 'Person', name: authorName, url: SITE_URL },
+    isPartOf: { '@id': WEBSITE_ID },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': url.startsWith('http') ? url : `${SITE_URL}${url}`,
+      '@id': absUrl,
     },
   }
   if (image) schema.image = image
+  if (keywords && keywords.length) schema.keywords = keywords.join(', ')
+  if (wordCount) schema.wordCount = wordCount
+  if (articleSection) schema.articleSection = articleSection
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 }
 
@@ -254,6 +329,42 @@ export function EventJsonLd({
       '@type': 'Place',
       name: location,
     }
+  }
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+}
+
+export function OrganizationJsonLd() {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': ORGANIZATION_ID,
+    name: 'Vinayak Kundar',
+    alternateName: 'VK_OS v1.0',
+    url: SITE_URL,
+    logo: `${SITE_URL}/icon.svg`,
+    description: 'Official portfolio of Vinayak Kundar — Computer Engineering student at APSIT (Mumbai University), AI builder, hackathon finalist, community leader, and full stack developer.',
+    foundingDate: '2025-05-30',
+    founder: { '@id': PERSON_ID },
+    sameAs: [
+      'https://github.com/vinayak1497',
+      'https://www.linkedin.com/in/vinayak-kundar',
+      'https://x.com/VKundar73526',
+      'https://dev.to/vinayak1497',
+      'https://hashnode.com/@vinayak1497',
+    ],
+    knowsAbout: [
+      'Artificial Intelligence',
+      'Full Stack Development',
+      'Machine Learning',
+      'Cloud Computing',
+      'Web Development',
+    ],
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Thane',
+      addressRegion: 'Maharashtra',
+      addressCountry: 'IN',
+    },
   }
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 }
